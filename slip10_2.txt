@@ -1,0 +1,67 @@
+ import java.io.*;
+import java.net.*;
+
+class Slip10_Server
+{
+            public static void main(String a[]) throws Exception
+            {
+                        ServerSocket ss = new ServerSocket(1000);
+                        System.out.println("Server is waiting for client : ");
+                        Socket s =ss.accept();
+                        System.out.println("Client is connected");
+                        DataInputStream dis=new DataInputStream(s.getInputStream());
+                        DataOutputStream dos=new DataOutputStream(s.getOutputStream());
+                        while(true)
+                        {
+                                    String fname =(String)dis.readUTF();
+                                    if(fname.equals("End"))
+                                    {           break;
+
+                                    }
+                                    File f = new File(fname);
+                                    if(f.exists())     
+                                    {
+                                                dos.writeUTF("1");
+                                    }
+                                    else dos.writeUTF("0");
+                        }
+            }
+}
+/* Client_Slip10_2 */
+
+
+import java.io.*;
+import java.net.*;
+
+class Slip_Client
+{
+            public static void main(String a[]) throws Exception
+            {
+                        Socket s = new Socket("localhost",1000);
+                        System.out.println("client is connected : ");
+                        DataInputStream dis=new DataInputStream(s.getInputStream());
+                        DataOutputStream dos=new DataOutputStream(s.getOutputStream());
+
+                        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+                        while(true)
+                        {
+                                    System.out.println("Stop proceesing enter End");
+                                    System.out.println("Enter file name : ");
+                                    String fname = br.readLine();
+
+                                    dos.writeUTF(fname);
+                                    if(fname.equals("End"))
+                                    {
+                                                break;
+                                    }
+                                    String msg = (String)dis.readUTF();
+                                    if(msg.equals("0"))
+                                                System.out.println("File not present ");
+                                    else
+                                    {
+                                                System.out.println("File Present");
+                                                //System.out.println(msg);
+                                    }
+                        }
+            }
+}

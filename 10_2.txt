@@ -1,0 +1,105 @@
+//client here below
+//============================================================
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+
+class c2_1c 
+{
+public static void main(String []args) throws IOException
+{
+Socket s=null;
+PrintWriter out=null;
+String str;
+
+	try
+	{
+	 s= new Socket("127.0.0.1",1234);
+	 out= new PrintWriter(s.getOutputStream(),true);
+	 BufferedReader br= new BufferedReader(new InputStreamReader(System.in));
+	BufferedReader br1= new BufferedReader(new InputStreamReader(s.getInputStream()));
+	str=br.readLine();
+	while(!str.equalsIgnoreCase("end"))
+	{
+	
+	 out.println(str);
+	 str=br.readLine();
+	 
+	}
+	out.println(str);
+	System.out.println(br1.readLine());
+	 s.close();
+	}
+
+catch(UnknownHostException e)
+{
+e.printStackTrace();
+}
+
+
+}
+
+}
+
+//-==========================================
+//server here below
+
+
+import java.io.*;
+import java.net.*;
+
+class s2_1s 
+{
+public static void main(String []args) throws IOException
+{
+Socket s=null;
+ServerSocket ss=null;
+String str; int y=0,n=0;
+PrintWriter out=null;
+
+	try
+	{
+	 ss= new ServerSocket(1234);
+	 System.out.println("Server Started...");
+	s=ss.accept();
+		 System.out.println("Server Connected...");
+		 out=new PrintWriter(s.getOutputStream(),true);
+	 BufferedReader br= new BufferedReader(new InputStreamReader(s.getInputStream()));
+	
+	 str=br.readLine();
+	 while(!str.equalsIgnoreCase("end"))
+	 {
+	
+					 File f= new File(str);
+					 if(f.exists())
+					 {
+					 System.out.println(" exists");	
+					 y++;
+					 }
+					 else if(str.equals(""))
+					 {
+					 
+					 }
+				 		else
+					 {
+					 	System.out.println(" do not exists");
+					 	n++;
+					 }
+			 
+			 str=br.readLine();
+	 }
+	 out.println("Total File EXISTS are "+y+" and Do not exists are "+n);
+	 s.close();
+	}
+
+catch(UnknownHostException e)
+{
+e.printStackTrace();
+}
+
+
+}
+
+}
